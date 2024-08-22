@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Character</title>
+</head>
+<body>
+    <h1>Create Character</h1>
+    <form id="characterForm">
+        <label for="characterUsername">Username:</label>
+        <input type="text" id="characterUsername" name="username" required>
+        <br>
+        <label for="characterName">Nome:</label>
+        <input type="text" id="characterName" name="nome" required>
+        <br>
+        <label for="race">Race:</label>
+        <input type="text" id="race" name="race" required>
+        <br>
+        <label for="class">Class:</label>
+        <input type="text" id="class" name="class" required>
+        <br>
+        <button type="submit">Create Character</button>
+    </form>
+
+    <script>
+        document.getElementById('characterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('characterUsername').value;
+            const nome = document.getElementById('characterName').value;
+            const race = document.getElementById('race').value;
+            const characterClass = document.getElementById('class').value;
+
+            fetch('/create-character', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, nome, race, class: characterClass })
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

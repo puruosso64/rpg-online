@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat</title>
+</head>
+<body>
+    <h1>Start Combat</h1>
+    <form id="combatForm">
+        <label for="combatUsername">Username:</label>
+        <input type="text" id="combatUsername" name="username" required>
+        <br>
+        <label for="characterName">Character Name:</label>
+        <input type="text" id="characterName" name="characterName" required>
+        <br>
+        <button type="submit">Start Combat</button>
+    </form>
+
+    <div id="combatActions" style="display: none;">
+        <button id="useSkill">Use Skill</button>
+        <button id="useItem">Use Item</button>
+    </div>
+
+    <div id="combatLog">
+        <!-- Aqui será exibido o log do combate -->
+    </div>
+
+    <script>
+        let characterId; // Variável para armazenar o ID do personagem
+
+        document.getElementById('combatForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('combatUsername').value;
+            const characterName = document.getElementById('characterName').value;
+
+            fetch('/start-combat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, characterName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                characterId = data.characterId; // Obter o ID do personagem do backend
+                const combatLog = document.getElementById('combatLog');
+                combatLog.innerHTML = ''; // Limpa o log atual
+
+                data.log.forEach(entry => {
+                    const p = document.createElement('p');
+                    p.textContent = entry;
+                    combatLog.appendChild(p);
+                });
+
+                const result = document.createElement('h3');
+                result.textContent = `Resultado: ${data.result}`;
+                combatLog.appendChild(result);
+
+                document.getElementById('combatActions').style.display = 'block'; // Mostrar ações de combate
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('useSkill').addEventListener('click', function() {
+            const skillId = prompt('Enter the skill ID to use:');
+
+            fetch('/use-skill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ characterId, skillId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('useItem').addEventListener('click', function() {
+            const itemId = prompt('Enter the item ID to use:');
+
+            fetch('/use-item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ characterId, itemId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
