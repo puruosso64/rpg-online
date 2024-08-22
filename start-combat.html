@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Combat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/character-details">Personagem</a></li>
+            <li><a href="/inventory">Inventário</a></li>
+            <li><a href="/missions">Missões</a></li>
+            <li><a href="/start-combat">Combate</a></li>
+        </ul>
+    </nav>
+
+    <h1>Start Combat</h1>
+    <form id="combatForm">
+        <label for="combatUsername">Username:</label>
+        <input type="text" id="combatUsername" name="username" required>
+        <br>
+        <label for="characterName">Character Name:</label>
+        <input type="text" id="characterName" name="characterName" required>
+        <br>
+        <button type="submit">Start Combat</button>
+    </form>
+
+    <div id="combatActions" style="display: none;">
+        <button id="useSkill">Use Skill</button>
+        <button id="useItem">Use Item</button>
+    </div>
+
+    <div id="combatLog">
+        <!-- Aqui será exibido o log do combate -->
+    </div>
+
+    <div class="status-bar">
+        <div class="health-bar">
+            <span id="health-value">100</span> HP
+        </div>
+        <div class="mana-bar">
+            <span id="mana-value">50</span> MP
+        </div>
+        <div class="xp-bar">
+            <span id="xp-value">200</span> XP
+        </div>
+    </div>
+
+    <script src="combat.js"></script>
+</body>
+</html>
